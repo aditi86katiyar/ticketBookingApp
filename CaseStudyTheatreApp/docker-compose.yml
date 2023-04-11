@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+       - test_network
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    restart: always
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "seat-topic:1:1"
+    networks:
+       - test_network
+
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: new_user
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - test_network
+      
+  theatre-service:
+    image: aditikatiyar/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
+      SPRING_DATA_MONGODB_URI: "mongodb://new_user:password@172.24.0.2:27017/theatre"    
+      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
+    ports:
+      - "8081:8081"
+    depends_on:
+      - kafka
+      - mongodb
+    networks:
+      - test_network
+      
+networks:
+    test_network:
+      driver: bridge
+      
+volumes:
+    mongo-data:
