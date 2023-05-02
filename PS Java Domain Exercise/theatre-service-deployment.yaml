@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: theatre-service
+  name: theatre-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: theatre-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/psjavadomainexercise-default: "true"
+        io.kompose.service: theatre-service
+    spec:
+      containers:
+        - env:
+            - name: SPRING_DATA_MONGODB_PASSWORD
+              value: Newuser12345
+            - name: SPRING_DATA_MONGODB_URI
+              value: mongodb+srv://new_user:Newuser12345@cluster0.eivqluj.mongodb.net/theatre?retryWrites=true&w=majority
+            - name: SPRING_DATA_MONGODB_USERNAME
+              value: new_user
+          image: aditikatiyar/theatreapp:v2
+          name: theatre-service
+          ports:
+            - containerPort: 8081
+          resources: {}
+      restartPolicy: Always
+status: {}

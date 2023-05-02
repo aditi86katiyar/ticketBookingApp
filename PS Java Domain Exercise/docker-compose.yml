@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  theatre-service:
+    image: aditikatiyar/theatreapp:v2
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb+srv://new_user:Newuser12345@cluster0.eivqluj.mongodb.net/theatre?retryWrites=true&w=majority"
+      SPRING_DATA_MONGODB_USERNAME: "new_user"
+      SPRING_DATA_MONGODB_PASSWORD: "Newuser12345"
+    ports:
+      - "8081:8081"

@@ -2,20 +2,49 @@ version: '3'
 
 services:
    booking-service:
-    image: aditikatiyar/bookingapp:latest
+    image: aditikatiyar/bookingapp:v3
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: "172.24.0.4:9092"
+      SPRING_KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      SPRING_KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      SPRING_KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: "kafka:9092"
       SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
-      SPRING_KAFKA_CONSUMER_GROUP_ID: my-consumer-group
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
-      SPRING_KAFKA_TEMPLATE_DEFAULT_TOPIC: movie-topic
     ports:
-      - "8082:8082"
+      - "8089:8089"
+    depends_on:
+      - kafka
     networks:
       - test_network
+      
+   zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+       - test_network
+   
+   kafka:
+    image: confluentinc/cp-kafka:latest
+    restart: always
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: "booking-topic:1:1"
+    networks:
+       - test_network
       
 networks:
     test_network:
