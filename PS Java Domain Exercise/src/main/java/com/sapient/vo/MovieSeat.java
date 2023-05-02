@@ -3,9 +3,6 @@ package com.sapient.vo;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Document(collection = "movieSeats")
 public class MovieSeat {
 	
@@ -14,7 +11,7 @@ public class MovieSeat {
 	
 	String theatreId;
 	String seatNumber;
-	boolean available;
+	boolean isAvailable;
 	String seatType;
 	
 
@@ -36,12 +33,14 @@ public class MovieSeat {
 	}
 
 	public boolean isAvailable() {
-		return available;
+		return isAvailable;
 	}
 
-	public void setAvailable(boolean available) {
-		this.available = available;
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
 	}
+	
+
 
 	public String getTheatreId() {
 		return theatreId;
@@ -51,24 +50,16 @@ public class MovieSeat {
 		this.theatreId = theatreId;
 	}
 
-	public MovieSeat(String theatreId, String seatNumber, boolean available, String seatType) {
+	public MovieSeat(String theatreId, String seatNumber, boolean isAvailable, String seatType) {
 		super();
 		this.theatreId = theatreId;
 		this.seatNumber = seatNumber;
-		this.available = available;
+		this.isAvailable = isAvailable;
 		this.seatType = seatType;
 	}
 
-	 @JsonCreator
-	    public MovieSeat(@JsonProperty("theatreId") String theatreId,
-	    				 @JsonProperty("seatNumber") String seatNumber,
-	                     @JsonProperty("seatType") String seatType,
-	                     @JsonProperty("available") boolean available) {
-	        this.theatreId = theatreId;
-	        this.seatNumber = seatNumber;
-	        this.seatType = seatType;
-	        this.available = available;	
-	 }
+	
+
 	
 	
 	

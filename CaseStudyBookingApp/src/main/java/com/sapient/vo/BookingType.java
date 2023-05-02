@@ -1,5 +1,8 @@
 package com.sapient.vo;
 
-public enum SeatStatus {
+public enum BookingType {
+	
+	NEW,
+	CANCELLED
 
 }

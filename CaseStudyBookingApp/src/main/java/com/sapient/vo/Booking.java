@@ -1,64 +1,59 @@
 package com.sapient.vo;
 
-import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-@Document(collection="booking")
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@Entity
+@Table(name = "booking")
 public class Booking {
 	
-	@org.springframework.data.annotation.Id
-	Long bookingId;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	Long id;
 	
-	User user;
+	String userId;
 	
-	MovieSeats movieSeats;
+	String theatreId;
+	
+    @Transient
+	Map<String, List<String>> seats;
 
-    int amount;
+    double totalPrice;
     
     int numberOfTickets;
 	
-	PAYMENT_STATUS paymentStatus;
-	
 	Date bookedDate;
 	
-    private LocalDateTime showTime;
-    
+    private Date showTime;
+  
     private String paymentMethod;
-    
-    private double totalCost;
+   
+    BookingType bookingType;
 
-	public Long getBookingId() {
-		return bookingId;
+		public Map<String, List<String>> getSeats() {
+		return seats;
 	}
 
-	public void setBookingId(Long bookingId) {
-		this.bookingId = bookingId;
+	public void setSeats(Map<String, List<String>> seats) {
+		this.seats = seats;
 	}
 
-	public User getUser() {
-		return user;
+		public double getTotalPrice() {
+		return totalPrice;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public MovieSeats getMovieSeats() {
-		return movieSeats;
-	}
-
-	public void setMovieSeats(MovieSeats movieSeats) {
-		this.movieSeats = movieSeats;
-	}
-
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public int getNumberOfTickets() {
@@ -69,14 +64,6 @@ public class Booking {
 		this.numberOfTickets = numberOfTickets;
 	}
 
-	public PAYMENT_STATUS getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public void setPaymentStatus(PAYMENT_STATUS paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
 	public Date getBookedDate() {
 		return bookedDate;
 	}
@@ -85,11 +72,11 @@ public class Booking {
 		this.bookedDate = bookedDate;
 	}
 
-	public LocalDateTime getShowTime() {
+	public Date getShowTime() {
 		return showTime;
 	}
 
-	public void setShowTime(LocalDateTime showTime) {
+	public void setShowTime(Date showTime) {
 		this.showTime = showTime;
 	}
 
@@ -101,13 +88,56 @@ public class Booking {
 		this.paymentMethod = paymentMethod;
 	}
 
-	public double getTotalCost() {
-		return totalCost;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setTotalCost(double totalCost) {
-		this.totalCost = totalCost;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-		
-}
+	public String getTheatreId() {
+		return theatreId;
+	}
+
+	public void setTheatreId(String theatreId) {
+		this.theatreId = theatreId;
+	}
+	
+	
+
+	public BookingType getBookingType() {
+		return bookingType;
+	}
+
+	public void setBookingType(BookingType bookingType) {
+		this.bookingType = bookingType;
+	}
+	
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Booking(String userId, String theatreId, Map<String, List<String>> seats, double totalPrice,
+			int numberOfTickets, Date bookedDate, Date showTime, String paymentMethod, BookingType bookingType) {
+		super();
+		this.userId = userId;
+		this.theatreId = theatreId;
+		this.seats = seats;
+		this.totalPrice = totalPrice;
+		this.numberOfTickets = numberOfTickets;
+		this.bookedDate = bookedDate;
+		this.showTime = showTime;
+		this.paymentMethod = paymentMethod;
+		this.bookingType = bookingType;
+	}
+
+	
+	
+    }
