@@ -1,4 +1,4 @@
-package com.sapient.vo;
+package com.sapient.service;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,7 @@ public class ReserveSeatCommand {
 
 
 	
-	Long bookingId;
+	String bookingId;
 
 	@JsonProperty("theatreId")
 	String theatreId;
@@ -17,11 +17,11 @@ public class ReserveSeatCommand {
     @JsonProperty("seats")
 	Map<String, List<String>> seats;
 
-	public Long getBookingId() {
+	public String getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(Long bookingId) {
+	public void setBookingId(String bookingId) {
 		this.bookingId = bookingId;
 	}
 
@@ -41,12 +41,17 @@ public class ReserveSeatCommand {
 		this.seats = seats;
 	}
 
-	public ReserveSeatCommand(Long bookingId, String theatreId, Map<String, List<String>> seats) {
+	public ReserveSeatCommand(String bookingId, String theatreId, Map<String, List<String>> seats) {
 		super();
 		this.bookingId = bookingId;
 		this.theatreId = theatreId;
 		this.seats = seats;
 	}
+	
+public ReserveSeatCommand() {
+	super();
+	
+}
     
     
 

@@ -1,7 +1,7 @@
 package com.sapient.vo;
 
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,7 +13,7 @@ public class ShowTiming {
 	@Id
 	String id;
 	
-	Date showTiming;
+	ZonedDateTime showTiming;
 	
 	String theatreId;
 
@@ -27,15 +27,15 @@ public class ShowTiming {
 		this.theatreId = theatreId;
 	}
 
-	public Date getShowTiming() {
+	public ZonedDateTime getShowTiming() {
 		return showTiming;
 	}
 
-	public void setShowTiming(Date showTiming) {
+	public void setShowTiming(ZonedDateTime showTiming) {
 		this.showTiming = showTiming;
 	}
 
-	public ShowTiming(Date showTiming, String theatreId) {
+	public ShowTiming(ZonedDateTime showTiming, String theatreId) {
 		super();
 		this.showTiming = showTiming;
 		this.theatreId = theatreId;

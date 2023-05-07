@@ -2,6 +2,7 @@ package com.sapient.controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sapient.service.TheatreDetailsService;
-import com.sapient.vo.MovieSeat;
+import com.sapient.vo.MovieSeats;
 
 
 @CrossOrigin(origins = "http://localhost:8081")
@@ -25,11 +26,11 @@ public class BookingController {
 	TheatreDetailsService theatreDetailsService;
 	
 	@GetMapping("checkSeats/theatreId/{theatreId}/seatType/{seatType}/seatNumbers/{seatNumbers}")
-	public ResponseEntity<List<MovieSeat>> getSeatsAvailability(@PathVariable("theatreId") String theatreId,@PathVariable("seatType") String seatType,@PathVariable("seatNumbers") String seatNumbers ) {
+	public ResponseEntity<Optional<MovieSeats>> getSeatsAvailability(@PathVariable("theatreId") String theatreId,@PathVariable("seatType") String seatType,@PathVariable("seatNumbers") String seatNumbers ) {
 		try {
 		    List<String> seatNumbersList = Arrays.asList(seatNumbers.split(","));
-			List<MovieSeat> _movieSeats = theatreDetailsService.checkSeatsAvailable(theatreId,seatType,seatNumbersList);
-			return new ResponseEntity<List<MovieSeat>>(_movieSeats, HttpStatus.OK);
+			Optional<MovieSeats> _movieSeats = theatreDetailsService.checkSeatsAvailable(theatreId,seatType,seatNumbersList);
+			return new ResponseEntity<Optional<MovieSeats>>(_movieSeats, HttpStatus.OK);
 		} catch (Exception e) {
            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

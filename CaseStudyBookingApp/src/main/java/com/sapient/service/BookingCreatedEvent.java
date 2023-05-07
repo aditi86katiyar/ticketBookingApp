@@ -5,18 +5,18 @@ import java.util.Map;
 
 public class BookingCreatedEvent {
 	
-	Long bookingId;
+	String bookingId;
 	Double paymentAmount;
 
 	Map<String, List<String>> seats;
 	
 	String theatreId;
 
-	public Long getBookingId() {
+	public String getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(Long bookingId) {
+	public void setBookingId(String bookingId) {
 		this.bookingId = bookingId;
 	}
 
@@ -44,7 +44,8 @@ public class BookingCreatedEvent {
 		this.theatreId = theatreId;
 	}
 
-	public BookingCreatedEvent(Long bookingId, Double paymentAmount, Map<String, List<String>> seats,
+	public BookingCreatedEvent(String
+			bookingId, Double paymentAmount, Map<String, List<String>> seats,
 			String theatreId) {
 		super();
 		this.bookingId = bookingId;

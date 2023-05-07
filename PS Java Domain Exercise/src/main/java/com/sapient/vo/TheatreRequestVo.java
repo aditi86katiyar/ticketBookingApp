@@ -1,12 +1,12 @@
 package com.sapient.vo;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 public class TheatreRequestVo {
 	
 	String movie;
 	
-	Date showTime;
+	ZonedDateTime showTime;
 	
 	
 	String city;
@@ -22,12 +22,12 @@ public class TheatreRequestVo {
 	}
 
 
-	public Date getShowTime() {
+	public ZonedDateTime getShowTime() {
 		return showTime;
 	}
 
 
-	public void setShowTime(Date showTime) {
+	public void setShowTime(ZonedDateTime showTime) {
 		this.showTime = showTime;
 	}
 

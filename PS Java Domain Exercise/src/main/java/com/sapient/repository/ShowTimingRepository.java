@@ -1,5 +1,6 @@
 package com.sapient.repository;
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -16,10 +17,10 @@ public interface ShowTimingRepository extends MongoRepository<ShowTiming, String
 	List<ShowTiming> findByTheatreId(String theatreId);
 	
 	@DeleteQuery("{'showTiming':?0,'theatreId': ?1}")
-	void deleteByShowTimeAndTheatreId(Date showTiming,String theatreId);
+	void deleteByShowTimeAndTheatreId(ZonedDateTime zonedDateTime,String theatreId);
 	
 	@Query("{'showTiming':?0,'theatreId': ?1}")
-	ShowTiming findByTheatreIdAndShowTime(Date showTiming, String theatreId);
+	ShowTiming findByTheatreIdAndShowTime(ZonedDateTime showTiming, String theatreId);
 
 	
 }

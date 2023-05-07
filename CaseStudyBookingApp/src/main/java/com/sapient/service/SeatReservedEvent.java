@@ -2,13 +2,13 @@ package com.sapient.service;
 
 public class SeatReservedEvent {
 	
-	Long bookingId;
+	String bookingId;
 
-	public Long getBookingId() {
+	public String getBookingId() {
 		return bookingId;
 	}
 
-	public void setBookingId(Long bookingId) {
+	public void setBookingId(String bookingId) {
 		this.bookingId = bookingId;
 	}
 

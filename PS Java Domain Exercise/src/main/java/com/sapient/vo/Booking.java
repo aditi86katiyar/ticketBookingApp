@@ -1,50 +1,51 @@
 package com.sapient.vo;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 public class Booking {
 	
-	Long bookingId;
 	
-   Theatre theatre;
+	String id;
+	
+	String userId;
+	
+	String theatreId;
+	
+   Map<String, List<String>> seats;
 
-    int amount;
+    double totalPrice;
     
     int numberOfTickets;
 	
-	PAYMENT_STATUS paymentStatus;
-	
 	Date bookedDate;
 	
-	Time movieTiming;
-	
-	List<Seat> seats=new ArrayList<>();
+    private Date showTime;
+  
+    private String paymentMethod;
+   
+    BookingType bookingType;
 
-	public Long getBookingId() {
-		return bookingId;
+		public Map<String, List<String>> getSeats() {
+		return seats;
 	}
 
-	public void setBookingId(Long bookingId) {
-		this.bookingId = bookingId;
-	}
-	
-	public Theatre getTheatre() {
-		return theatre;
+	public void setSeats(Map<String, List<String>> seats) {
+		this.seats = seats;
 	}
 
-	public void setTheatre(Theatre theatre) {
-		this.theatre = theatre;
+		public double getTotalPrice() {
+		return totalPrice;
 	}
 
-	public int getAmount() {
-		return amount;
-	}
-
-	public void setAmount(int amount) {
-		this.amount = amount;
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 
 	public int getNumberOfTickets() {
@@ -55,14 +56,6 @@ public class Booking {
 		this.numberOfTickets = numberOfTickets;
 	}
 
-	public PAYMENT_STATUS getPaymentStatus() {
-		return paymentStatus;
-	}
-
-	public void setPaymentStatus(PAYMENT_STATUS paymentStatus) {
-		this.paymentStatus = paymentStatus;
-	}
-
 	public Date getBookedDate() {
 		return bookedDate;
 	}
@@ -71,19 +64,91 @@ public class Booking {
 		this.bookedDate = bookedDate;
 	}
 
-	public Time getMovieTiming() {
-		return movieTiming;
+	public Date getShowTime() {
+		return showTime;
 	}
 
-	public void setMovieTiming(Time movieTiming) {
-		this.movieTiming = movieTiming;
+	public void setShowTime(Date showTime) {
+		this.showTime = showTime;
 	}
 
-	public List<Seat> getSeats() {
-		return seats;
+	public String getPaymentMethod() {
+		return paymentMethod;
 	}
 
-	public void setSeats(List<Seat> seats) {
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getTheatreId() {
+		return theatreId;
+	}
+
+	public void setTheatreId(String theatreId) {
+		this.theatreId = theatreId;
+	}
+	
+	
+
+	public BookingType getBookingType() {
+		return bookingType;
+	}
+
+	public void setBookingType(BookingType bookingType) {
+		this.bookingType = bookingType;
+	}
+	
+	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String uuid) {
+		this.id = uuid;
+	}
+	
+	public Booking() {}
+
+	public Booking(String userId, String theatreId, Map<String, List<String>> seats, double totalPrice,
+			int numberOfTickets, Date bookedDate, Date showTime, String paymentMethod, BookingType bookingType) {
+		super();
+		this.userId = userId;
+		this.theatreId = theatreId;
 		this.seats = seats;
+		this.totalPrice = totalPrice;
+		this.numberOfTickets = numberOfTickets;
+		this.bookedDate = bookedDate;
+		this.showTime = showTime;
+		this.paymentMethod = paymentMethod;
+		this.bookingType = bookingType;
 	}
-}
+
+	public Booking(String id, String userId, String theatreId, Map<String, List<String>> seats, double totalPrice,
+			int numberOfTickets, Date bookedDate, Date showTime, String paymentMethod, BookingType bookingType) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.theatreId = theatreId;
+		this.seats = seats;
+		this.totalPrice = totalPrice;
+		this.numberOfTickets = numberOfTickets;
+		this.bookedDate = bookedDate;
+		this.showTime = showTime;
+		this.paymentMethod = paymentMethod;
+		this.bookingType = bookingType;
+	}
+	
+	
+
+	
+	
+    }

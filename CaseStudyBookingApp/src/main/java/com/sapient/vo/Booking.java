@@ -3,6 +3,7 @@ package com.sapient.vo;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,20 +14,17 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "booking")
+
 public class Booking {
 	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	
+	String id;
 	
 	String userId;
 	
 	String theatreId;
 	
-    @Transient
-	Map<String, List<String>> seats;
+   Map<String, List<String>> seats;
 
     double totalPrice;
     
@@ -116,13 +114,15 @@ public class Booking {
 	
 	
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(String uuid) {
+		this.id = uuid;
 	}
+	
+	public Booking() {}
 
 	public Booking(String userId, String theatreId, Map<String, List<String>> seats, double totalPrice,
 			int numberOfTickets, Date bookedDate, Date showTime, String paymentMethod, BookingType bookingType) {
@@ -137,6 +137,23 @@ public class Booking {
 		this.paymentMethod = paymentMethod;
 		this.bookingType = bookingType;
 	}
+
+	public Booking(String id, String userId, String theatreId, Map<String, List<String>> seats, double totalPrice,
+			int numberOfTickets, Date bookedDate, Date showTime, String paymentMethod, BookingType bookingType) {
+		super();
+		this.id = id;
+		this.userId = userId;
+		this.theatreId = theatreId;
+		this.seats = seats;
+		this.totalPrice = totalPrice;
+		this.numberOfTickets = numberOfTickets;
+		this.bookedDate = bookedDate;
+		this.showTime = showTime;
+		this.paymentMethod = paymentMethod;
+		this.bookingType = bookingType;
+	}
+	
+	
 
 	
 	

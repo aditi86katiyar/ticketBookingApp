@@ -1,15 +1,10 @@
 package com.sapient.vo;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection = "movieSeats")
 public class MovieSeat {
 	
-	@Id
+	
 	private String id;
 	
-	String theatreId;
 	String seatNumber;
 	boolean isAvailable;
 	String seatType;
@@ -42,23 +37,18 @@ public class MovieSeat {
 	
 
 
-	public String getTheatreId() {
-		return theatreId;
-	}
 
-	public void setTheatreId(String theatreId) {
-		this.theatreId = theatreId;
-	}
 
-	public MovieSeat(String theatreId, String seatNumber, boolean isAvailable, String seatType) {
+	public MovieSeat(String seatNumber, boolean isAvailable, String seatType) {
 		super();
-		this.theatreId = theatreId;
 		this.seatNumber = seatNumber;
 		this.isAvailable = isAvailable;
 		this.seatType = seatType;
 	}
 
-	
+	public MovieSeat() {
+		
+	}
 
 	
 	

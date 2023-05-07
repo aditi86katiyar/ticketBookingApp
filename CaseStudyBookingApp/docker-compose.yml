@@ -15,36 +15,8 @@ services:
       SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
     ports:
       - "8089:8089"
-    depends_on:
-      - kafka
     networks:
       - test_network
-      
-   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    restart: always
-    ports:
-      - "2181:2181"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    networks:
-       - test_network
-   
-   kafka:
-    image: confluentinc/cp-kafka:latest
-    restart: always
-    ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_CREATE_TOPICS: "booking-topic:1:1"
-    networks:
-       - test_network
       
 networks:
     test_network:

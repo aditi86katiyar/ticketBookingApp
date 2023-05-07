@@ -6,7 +6,7 @@ import java.util.List;
 public class ShowTimeRequestVo {
 	
 	String theatreId;
-	List<Date> showTiming;
+	List<String> showTiming;
 	
 	public String getTheatreId() {
 		return theatreId;
@@ -14,10 +14,10 @@ public class ShowTimeRequestVo {
 	public void setTheatreId(String theatreId) {
 		this.theatreId = theatreId;
 	}
-	public List<Date> getShowTiming() {
+	public List<String> getShowTiming() {
 		return showTiming;
 	}
-	public void setShowTiming(List<Date> showTiming) {
+	public void setShowTiming(List<String> showTiming) {
 		this.showTiming = showTiming;
 	}
 	

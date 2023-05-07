@@ -9,25 +9,20 @@ public class BookingSagaOrchestrator {
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
-    @KafkaListener(topics = "${spring.kafka.topic.name}",groupId = "${spring.kafka.consumer.group-id}")
-    public void handleBookingCreatedEvent(BookingCreatedEvent bookingCreatedEvent) {
-        Long bookingId = bookingCreatedEvent.getBookingId();
-        Double amount = bookingCreatedEvent.getPaymentAmount();
-        kafkaTemplate.send("initiatePaymentTopic", new InitiatePaymentCommand(bookingId, amount));
-        kafkaTemplate.send("seatReservedTopic", new ReserveSeatCommand(bookingId,bookingCreatedEvent.getTheatreId(),bookingCreatedEvent.getSeats()));
-        
-    }
+    
+   
 
-    @KafkaListener(topics = "seatReservedTopic")
-    public void handleTicketReservedEvent(ReserveSeatCommand ticketReservedEvent) {
-        Long bookingId = ticketReservedEvent.getBookingId();
-        // Send an acknowledgement to the ticket service
-        kafkaTemplate.send("ticketReservationAcknowledgedTopic", bookingId);
+    @KafkaListener(topics = "initiatePaymentTopic")
+    public void handleinitiatePaymentTopic(InitiatePaymentCommand paymentCompletedEvent) {
+    	String bookingId = paymentCompletedEvent.getBookingId();
+        // Send a booking confirmation to the customer
+    	System.out.println("initiatePaymentTopic");
+        kafkaTemplate.send("paymentCompletedTopic", bookingId);
     }
-
+    
     @KafkaListener(topics = "paymentCompletedTopic")
     public void handlePaymentCompletedEvent(PaymentCompletedEvent paymentCompletedEvent) {
-        Long bookingId = paymentCompletedEvent.getBookingId();
+    	String bookingId = paymentCompletedEvent.getBookingId();
         // Send a booking confirmation to the customer
         kafkaTemplate.send("bookingConfirmedTopic", bookingId);
     }

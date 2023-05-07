@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sapient.repository.ShowTimingRepository;
 import com.sapient.repository.TheatreRepository;
+import com.sapient.util.DateUtil;
 import com.sapient.vo.ShowTimeRequestVo;
 import com.sapient.vo.ShowTiming;
 import com.sapient.vo.Theatre;
@@ -42,7 +43,7 @@ public class ShowTimingController {
 	@PostMapping("/showtiming/")
 	public ResponseEntity<List<ShowTiming>> addMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
 		List<ShowTiming> showTimings=new ArrayList<>();
-		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showTimings.add(new ShowTiming(showtime, showTimeRequestVo.getTheatreId())));
+		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showTimings.add(new ShowTiming(DateUtil.dateConverter(showtime), showTimeRequestVo.getTheatreId())));
 		List<ShowTiming> _showTimings=showTimingRepository.saveAll(showTimings);
 		return new ResponseEntity<List<ShowTiming>>(_showTimings, HttpStatus.CREATED);
 		}
@@ -50,14 +51,14 @@ public class ShowTimingController {
 	@PutMapping("/showtiming/")
 	public ResponseEntity<List<ShowTiming>> updateMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
 		List<ShowTiming> showtimedb=showTimingRepository.findByTheatreId(showTimeRequestVo.getTheatreId());
-		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showtimedb.add(new ShowTiming(showtime, showTimeRequestVo.getTheatreId())));
+		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showtimedb.add(new ShowTiming(DateUtil.dateConverter(showtime), showTimeRequestVo.getTheatreId())));
 		List<ShowTiming> _showTimings=showTimingRepository.saveAll(showtimedb);
 		return new ResponseEntity<List<ShowTiming>>(_showTimings, HttpStatus.OK);
 		}
 	
 	@DeleteMapping("/showtiming/")
 	public ResponseEntity<String> deleteMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
-		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showTimingRepository.deleteByShowTimeAndTheatreId(showtime, showTimeRequestVo.getTheatreId()));
+		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showTimingRepository.deleteByShowTimeAndTheatreId(DateUtil.dateConverter(showtime), showTimeRequestVo.getTheatreId()));
 		return new ResponseEntity<String>("Shows are deleted successfully", HttpStatus.NO_CONTENT);
 		}
 	

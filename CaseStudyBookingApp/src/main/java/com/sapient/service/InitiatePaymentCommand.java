@@ -2,13 +2,13 @@ package com.sapient.service;
 
 public class InitiatePaymentCommand {
 	
-	Long bookingId;
+	String bookingId;
 	Double paymentAmount;
 	
-	public Long getBookingId() {
+	public String getBookingId() {
 		return bookingId;
 	}
-	public void setBookingId(Long bookingId) {
+	public void setBookingId(String bookingId) {
 		this.bookingId = bookingId;
 	}
 	public Double getPaymentAmount() {
@@ -17,7 +17,7 @@ public class InitiatePaymentCommand {
 	public void setPaymentAmount(Double paymentAmount) {
 		this.paymentAmount = paymentAmount;
 	}
-	public InitiatePaymentCommand(Long bookingId, Double paymentAmount) {
+	public InitiatePaymentCommand(String bookingId, Double paymentAmount) {
 		super();
 		this.bookingId = bookingId;
 		this.paymentAmount = paymentAmount;
