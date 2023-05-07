@@ -25,28 +25,52 @@ public class BookingSagaOrchestrator {
 
     @KafkaListener(topics = "seatReservedTopic",groupId = "seats-consumer")
     public void handleTicketReservedEvent(ReserveSeatCommand reserveSeatCommand) {
-        String bookingId = reserveSeatCommand.getBookingId();
-
+    	boolean bookingSeatsAvailable=false;
+    	List<String> seatNumbers=new ArrayList<>();
         for (Entry<String, List<String>> seat : reserveSeatCommand.getSeats().entrySet()) {
             String theatreId = reserveSeatCommand.getTheatreId();
-            List<String> seatNumbers = seat.getValue();
-
-            MovieSeats movieSeats = movieSeatsRepository.findByTheatreId(theatreId);
+            seatNumbers = seat.getValue();
+            System.out.println("seats"+seat.getValue());
+        }
+            MovieSeats movieSeats = movieSeatsRepository.findByTheatreId(reserveSeatCommand.getTheatreId());
             List<MovieSeat> updatedMovieSeats = new ArrayList<>();
 
             for (MovieSeat movieSeat : movieSeats.getSeats()) {
+                System.out.println("movieSeat inside"+movieSeat);
+
                 if (seatNumbers.contains(movieSeat.getSeatNumber())) {
                     movieSeat.setAvailable(false);
-                }
-                updatedMovieSeats.add(movieSeat);
-            }
+                	bookingSeatsAvailable=true;
+                    System.out.println("seats inside"+seatNumbers);
 
-            movieSeats.setSeats(updatedMovieSeats);
+                    System.out.println("bookingSeatsAvailable=true1;"+ bookingSeatsAvailable);
+
+                }
+                System.out.println("bookingSeatsAvailable=true2;"+ bookingSeatsAvailable);
+
+            }
+            System.out.println("bookingSeatsAvailable=true3;"+ bookingSeatsAvailable);
+
+
             movieSeatsRepository.save(movieSeats);
-        }
+        
 
         // Send an acknowledgement to the ticket service
-        kafkaTemplate.send("initiatePaymentTopic", bookingId);
+
+        if(bookingSeatsAvailable) {
+        	InitiatePaymentCommand initiatePaymentCommand=new InitiatePaymentCommand(reserveSeatCommand.getBookingId(),reserveSeatCommand.getAmount(),reserveSeatCommand.getSeats());
+            kafkaTemplate.send("initiatePaymentTopic", initiatePaymentCommand);
+            System.out.println("Next step:initiatePaymentTopic");
+        }
+        else{
+        	BookingCancelledTopic bookingCancelledTopic=new BookingCancelledTopic();
+        	bookingCancelledTopic.setBookingId(reserveSeatCommand.getBookingId());
+        	
+            kafkaTemplate.send("bookingCancelledTopic", bookingCancelledTopic);
+            System.out.println("Next step:cancelBooking");
+
+        }
+
     }
 
 

@@ -16,6 +16,8 @@ public class ReserveSeatCommand {
 	
     @JsonProperty("seats")
 	Map<String, List<String>> seats;
+    
+    double amount;
 
 	public String getBookingId() {
 		return bookingId;
@@ -40,14 +42,27 @@ public class ReserveSeatCommand {
 	public void setSeats(Map<String, List<String>> seats) {
 		this.seats = seats;
 	}
+	
+	
 
-	public ReserveSeatCommand(String bookingId, String theatreId, Map<String, List<String>> seats) {
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	
+	
+	public ReserveSeatCommand(String bookingId, String theatreId, Map<String, List<String>> seats, double amount) {
 		super();
 		this.bookingId = bookingId;
 		this.theatreId = theatreId;
 		this.seats = seats;
+		this.amount = amount;
 	}
-	
+
 	public ReserveSeatCommand() {
 		
 	}

@@ -22,9 +22,9 @@ public class KafkaService {
     }
 
 
-    public void produce(String topic, ReserveSeatCommand message) {
+    public void produce(String topic, String key,ReserveSeatCommand message) {
         	ObjectMapper objectMapper=new ObjectMapper();
-            	kafkaTemplate.send(topic, message);
+            	kafkaTemplate.send(topic, key,message);
 				System.out.println("Message pushed to kafka" +message );
 			
 }

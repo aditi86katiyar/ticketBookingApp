@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-   zookeeper:
+  zookeeper:
     image: confluentinc/cp-zookeeper:latest
     restart: always
     ports:
@@ -10,9 +10,9 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     networks:
-       - test_network
-   
-   kafka:
+      - test_network
+
+  kafka:
     image: confluentinc/cp-kafka:latest
     restart: always
     ports:
@@ -23,9 +23,41 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - ./server.properties:/etc/kafka/server.properties
     networks:
-       - test_network
-      
+      - test_network
+
+  connect:
+    image: confluentinc/cp-kafka-connect:latest
+    ports:
+      - 8083:8083
+    environment:
+      - CONNECT_BOOTSTRAP_SERVERS=kafka:9092
+      - CONNECT_REST_PORT=8083
+      - CONNECT_GROUP_ID=1
+      - CONNECT_CONFIG_STORAGE_TOPIC=seatReservedTopic
+      - CONNECT_OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - CONNECT_STATUS_STORAGE_TOPIC=my_connect_statuses
+      - CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR=1
+      - CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR=1
+      - CONNECT_STATUS_STORAGE_REPLICATION_FACTOR=1
+      - CONNECT_PLUGIN_PATH=/usr/share/java
+      - CONNECT_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - CONNECT_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - CONNECT_INTERNAL_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - CONNECT_INTERNAL_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - CONNECT_LOG4J_LOGGERS=org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR
+      - CONNECT_REST_ADVERTISED_HOST_NAME=connect
+      - CONNECT_REST_ADVERTISED_PORT=8083
+      - CONNECT_PLUGIN_PATH=/usr/share/java,/usr/share/confluent-hub-components
+    volumes:
+      - ./mongo-kafka-source.properties:/etc/kafka-connect/mongo-kafka-source.properties
+    depends_on:
+      - kafka
+    networks:
+      - test_network
+
 networks:
-    test_network:
-      driver: bridge
+  test_network:
+    driver: bridge

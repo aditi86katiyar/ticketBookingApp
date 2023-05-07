@@ -3,7 +3,7 @@ package com.sapient.service;
 import java.util.List;
 import java.util.Map;
 
-public class BookingCreatedEvent {
+public class BookingConfirmedEvent {
 	
 	String bookingId;
 	Double paymentAmount;
@@ -44,7 +44,7 @@ public class BookingCreatedEvent {
 		this.theatreId = theatreId;
 	}
 
-	public BookingCreatedEvent(String
+	public BookingConfirmedEvent(String
 			bookingId, Double paymentAmount, Map<String, List<String>> seats,
 			String theatreId) {
 		super();

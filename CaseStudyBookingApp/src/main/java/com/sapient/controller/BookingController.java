@@ -45,10 +45,10 @@ public class BookingController {
     	}
     	booking.setId(UUID.randomUUID().toString());
 
-    	ReserveSeatCommand seatCommand=new ReserveSeatCommand(booking.getId(), booking.getTheatreId(), booking.getSeats());
+    	ReserveSeatCommand seatCommand=new ReserveSeatCommand(booking.getId(), booking.getTheatreId(), booking.getSeats(),booking.getTotalPrice());
     	
        		System.out.println("Data pushed to kafka");
-    		kafkaService.produce("seatReservedTopic",seatCommand);
+       	    kafkaService.produce("seatReservedTopic", booking.getId(), seatCommand); // Pass the booking ID as the key
 			return new ResponseEntity("Booking Process Started", HttpStatus.OK);
     }
 }
