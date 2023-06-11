@@ -23,6 +23,7 @@ import com.sapient.vo.Theatre;
 import com.spaient.exception.TheatreAlreadyExists;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+import reactor.core.publisher.Mono;
 
 @Service
 public class TheatreDetailsService {
@@ -39,12 +40,12 @@ public class TheatreDetailsService {
 	@Transactional
 	public Theatre addMovieTheatre(Theatre theatre) throws Exception {
 		try {
-			Theatre _theatre = theatreRepository
+			Mono<Theatre> _theatre = theatreRepository
 					.save(theatre);
 			MovieSeats movieSeats=new MovieSeats();
 			List<MovieSeat> movieSeatsList=new ArrayList<>();
-			movieSeats.setTheatreId(_theatre.getId());
-			for(Seat seat:_theatre.getSeats()) {
+			movieSeats.setTheatreId(_theatre.block().getId());
+			for(Seat seat:_theatre.block().getSeats()) {
 				for(int i=seat.getFromSeat();i<seat.getToSeat();i++) {
 					MovieSeat movieSeat=new  MovieSeat(new StringBuilder().append(seat.getRowType()).append(String.format("%02d", i)).toString(), true,seat.getSeatType());
 					movieSeat.setSeatType(seat.getSeatType());
@@ -84,12 +85,11 @@ public class TheatreDetailsService {
 		}
 
 
-	public Optional<MovieSeats> checkSeatsAvailable(String theatreId, String seatType, List<String>seatNumbers) {
-		 Optional<MovieSeats> movieSeat = null ;
+	public Mono<Optional<MovieSeats>> checkSeatsAvailable(String theatreId, String seatType, List<String> seatNumbers) {
+	    return movieSeatsRepository.findById(theatreId)
+	            .map(Optional::ofNullable);
+	}
 
-	         movieSeat = movieSeatsRepository.findById(theatreId);
-			return movieSeat;
-}
 	
 	}
 	

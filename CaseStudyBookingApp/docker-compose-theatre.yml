@@ -2,7 +2,7 @@ version: '3'
 
 services:
   theatre-service:
-    image: aditikatiyar/theatreapp:v2
+    image: aditikatiyar/theatreapp:v3
     build:
       context: .
       dockerfile: Dockerfile
@@ -17,7 +17,7 @@ services:
       SPRING_DATA_MONGODB_USERNAME: "new_user"
       SPRING_DATA_MONGODB_PASSWORD: "Newuser12345"
     ports:
-      - "8081:8081"
+      - "8082:8082"
     networks:
       - test_network
       

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sapient.service.TheatreDetailsService;
 import com.sapient.vo.MovieSeats;
 
+import reactor.core.publisher.Mono;
+
 
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
@@ -26,14 +28,17 @@ public class BookingController {
 	TheatreDetailsService theatreDetailsService;
 	
 	@GetMapping("checkSeats/theatreId/{theatreId}/seatType/{seatType}/seatNumbers/{seatNumbers}")
-	public ResponseEntity<Optional<MovieSeats>> getSeatsAvailability(@PathVariable("theatreId") String theatreId,@PathVariable("seatType") String seatType,@PathVariable("seatNumbers") String seatNumbers ) {
-		try {
-		    List<String> seatNumbersList = Arrays.asList(seatNumbers.split(","));
-			Optional<MovieSeats> _movieSeats = theatreDetailsService.checkSeatsAvailable(theatreId,seatType,seatNumbersList);
-			return new ResponseEntity<Optional<MovieSeats>>(_movieSeats, HttpStatus.OK);
-		} catch (Exception e) {
-           return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public Mono<ResponseEntity<Optional<MovieSeats>>> getSeatsAvailability(@PathVariable("theatreId") String theatreId,
+	        @PathVariable("seatType") String seatType, @PathVariable("seatNumbers") String seatNumbers) {
+	    try {
+	        List<String> seatNumbersList = Arrays.asList(seatNumbers.split(","));
+	        Mono<Optional<MovieSeats>> _movieSeats = theatreDetailsService.checkSeatsAvailable(theatreId, seatType,
+	                seatNumbersList);
+	        return _movieSeats.map(movieSeats -> new ResponseEntity<>(movieSeats, HttpStatus.OK));
+	    } catch (Exception e) {
+	        return Mono.just(new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR));
+	    }
 	}
+
 
 	}

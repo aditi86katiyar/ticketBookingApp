@@ -21,7 +21,9 @@ import com.sapient.service.TheatreDetailsService;
 import com.sapient.vo.Theatre;
 import com.spaient.exception.TheatreAlreadyExists;
 
-@CrossOrigin(origins = "http://localhost:8081")
+import reactor.core.publisher.Flux;
+
+@CrossOrigin(origins = "http://localhost:8082")
 @RestController
 @RequestMapping("/onboarding/v1")
 public class TheatreOnboardingController {
@@ -35,8 +37,8 @@ public class TheatreOnboardingController {
 	
 	
 	@GetMapping("/theatre")
-	public ResponseEntity<Theatre> getMovieTheatre(@RequestBody Theatre theatre)  {
-			Theatre _theatre=theatreRepository.findByTheatreNameMovieNameCity(theatre.getTheatreName(),theatre.getMovie().getMovieName(),theatre.getAddress().getCity());
+	public ResponseEntity<Flux<Theatre>> getMovieTheatre(@RequestBody Theatre theatre)  {
+			Flux<Theatre> _theatre=theatreRepository.findByTheatreNameMovieNameCity(theatre.getTheatreName(),theatre.getMovie().getMovieName(),theatre.getAddress().getCity());
 			return new ResponseEntity<>(_theatre, HttpStatus.OK);
 		}
 	

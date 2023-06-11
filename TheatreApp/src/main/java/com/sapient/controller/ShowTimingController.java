@@ -23,6 +23,8 @@ import com.sapient.vo.ShowTiming;
 import com.sapient.vo.Theatre;
 import com.sapient.vo.TheatreRequestVo;
 
+import reactor.core.publisher.Flux;
+
 @CrossOrigin(origins = "http://localhost:8081")
 @RestController
 @RequestMapping("/showtimings/v1")
@@ -41,19 +43,19 @@ public class ShowTimingController {
 		}
 	
 	@PostMapping("/showtiming/")
-	public ResponseEntity<List<ShowTiming>> addMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
+	public ResponseEntity<Flux<ShowTiming>> addMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
 		List<ShowTiming> showTimings=new ArrayList<>();
 		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showTimings.add(new ShowTiming(DateUtil.dateConverter(showtime), showTimeRequestVo.getTheatreId())));
-		List<ShowTiming> _showTimings=showTimingRepository.saveAll(showTimings);
-		return new ResponseEntity<List<ShowTiming>>(_showTimings, HttpStatus.CREATED);
+		Flux<ShowTiming> _showTimings=showTimingRepository.saveAll(showTimings);
+		return new ResponseEntity<Flux<ShowTiming>>(_showTimings, HttpStatus.CREATED);
 		}
 	
 	@PutMapping("/showtiming/")
-	public ResponseEntity<List<ShowTiming>> updateMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
+	public ResponseEntity<Flux<ShowTiming>> updateMovieTimings(@RequestBody ShowTimeRequestVo showTimeRequestVo)  {
 		List<ShowTiming> showtimedb=showTimingRepository.findByTheatreId(showTimeRequestVo.getTheatreId());
 		showTimeRequestVo.getShowTiming().stream().forEach(showtime -> showtimedb.add(new ShowTiming(DateUtil.dateConverter(showtime), showTimeRequestVo.getTheatreId())));
-		List<ShowTiming> _showTimings=showTimingRepository.saveAll(showtimedb);
-		return new ResponseEntity<List<ShowTiming>>(_showTimings, HttpStatus.OK);
+		Flux<ShowTiming> _showTimings=showTimingRepository.saveAll(showtimedb);
+		return new ResponseEntity<Flux<ShowTiming>>(_showTimings, HttpStatus.OK);
 		}
 	
 	@DeleteMapping("/showtiming/")
